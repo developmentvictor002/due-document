@@ -10,7 +10,7 @@ public record UserResponseDto(
         String email,
         OffsetDateTime createdAt
 ) {
-    public UserResponseDto fromUser(User user) {
+    public static UserResponseDto fromUser(User user) {
         return new UserResponseDto(
                 user.getUserId(),
                 user.getFullName(),
