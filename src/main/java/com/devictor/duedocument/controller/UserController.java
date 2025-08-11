@@ -49,4 +49,18 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(path = "/{userId}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable("userId") Long userId,
+                                                      @RequestBody @Valid UserRequestDto dto) {
+        UserResponseDto responseDto = userService.updateUser(userId, dto);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(responseDto.userId())
+                .toUri();
+        return ResponseEntity.ok()
+                .location(location)
+                .body(responseDto);
+    }
 }

@@ -48,4 +48,13 @@ public class UserService {
         userRespository.delete(user);
         return true;
     }
+
+    public UserResponseDto updateUser(Long userId, UserRequestDto dto) {
+        var user = findUserEntityById(userId);
+        user.setFullName(dto.fullName());
+        user.setEmail(dto.email());
+        user.setPasswordHash(dto.password());
+        User saved = userRespository.save(user);
+        return UserResponseDto.fromUser(saved);
+    }
 }
