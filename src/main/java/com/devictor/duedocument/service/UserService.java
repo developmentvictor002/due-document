@@ -2,6 +2,7 @@ package com.devictor.duedocument.service;
 
 import com.devictor.duedocument.controller.dto.UserRequestDto;
 import com.devictor.duedocument.entity.User;
+import com.devictor.duedocument.exception.UserNotFoundException;
 import com.devictor.duedocument.repository.UserRespository;
 import com.devictor.duedocument.service.dto.UserResponseDto;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class UserService {
         User user = dto.toUser();
         User savedUser = userRespository.save(user);
         return UserResponseDto.fromUser(savedUser);
+    }
+
+    protected User findUserEntityById(Long id) {
+        return userRespository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id {" + id + "} not found"));
     }
 }
