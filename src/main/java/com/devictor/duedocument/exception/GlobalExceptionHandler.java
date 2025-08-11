@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return e.toProblemDetail();
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ProblemDetail handleUserNotFoundException(UserNotFoundException e) {
+        return e.toProblemDetail();
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         var invalidParams = e.getFieldErrors()
