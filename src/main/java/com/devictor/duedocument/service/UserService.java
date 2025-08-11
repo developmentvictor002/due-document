@@ -1,5 +1,7 @@
 package com.devictor.duedocument.service;
 
+import com.devictor.duedocument.controller.dto.UserRequestDto;
+import com.devictor.duedocument.entity.User;
 import com.devictor.duedocument.repository.UserRespository;
 import com.devictor.duedocument.service.dto.UserResponseDto;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,9 @@ public class UserService {
         this.userRespository = userRespository;
     }
 
-    public UserResponseDto createUser() {
-        return null;
+    public UserResponseDto createUser(UserRequestDto dto) {
+        User user = dto.toUser();
+        User savedUser = userRespository.save(user);
+        return UserResponseDto.fromUser(savedUser);
     }
 }
