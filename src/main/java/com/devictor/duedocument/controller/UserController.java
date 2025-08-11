@@ -37,4 +37,10 @@ public class UserController {
         UserSummaryDto responseDto = userService.getUserById(userId);
         return ResponseEntity.ok(responseDto);
     }
+
+    @GetMapping(path = "/{userId}/details")
+    public ResponseEntity<UserResponseDto> getUserByIdWithDetails(@PathVariable("userId") Long userId) {
+        UserResponseDto responseDto = userService.getUserByIdWithDetails(userId);
+        return ResponseEntity.ok(responseDto);
+    }
 }

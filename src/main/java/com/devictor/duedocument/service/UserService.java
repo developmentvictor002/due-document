@@ -32,4 +32,9 @@ public class UserService {
         User user = findUserEntityById(userId);
         return UserSummaryDto.fromUser(user);
     }
+
+    public UserResponseDto getUserByIdWithDetails(Long userId) {
+        User user = findUserEntityById(userId);
+        return UserResponseDto.fromUser(user);
+    }
 }

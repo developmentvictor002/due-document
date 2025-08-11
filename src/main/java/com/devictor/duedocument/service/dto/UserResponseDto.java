@@ -8,14 +8,16 @@ public record UserResponseDto(
         Long userId,
         String fullName,
         String email,
-        OffsetDateTime createdAt
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
 ) {
     public static UserResponseDto fromUser(User user) {
         return new UserResponseDto(
                 user.getUserId(),
                 user.getFullName(),
                 user.getEmail(),
-                user.getCreatedAt()
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 }
