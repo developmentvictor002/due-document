@@ -7,14 +7,17 @@ import com.devictor.duedocument.exception.UserNotFoundException;
 import com.devictor.duedocument.repository.UserRespository;
 import com.devictor.duedocument.service.dto.UserResponseDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     private final UserRespository userRespository;
+    private final DocumentService documentService;
 
-    public UserService(UserRespository userRespository) {
+    public UserService(UserRespository userRespository, DocumentService documentService) {
         this.userRespository = userRespository;
+        this.documentService = documentService;
     }
 
     public UserResponseDto createUser(UserRequestDto dto) {
@@ -36,5 +39,13 @@ public class UserService {
     public UserResponseDto getUserByIdWithDetails(Long userId) {
         User user = findUserEntityById(userId);
         return UserResponseDto.fromUser(user);
+    }
+
+    @Transactional
+    public boolean deleteUser(Long userId) {
+        User user = findUserEntityById(userId);
+        documentService.deleteDocumentsByUser(user);
+        userRespository.delete(user);
+        return true;
     }
 }

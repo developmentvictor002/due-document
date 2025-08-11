@@ -22,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto dto) {
         UserResponseDto responseDto = userService.createUser(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseDto.userId())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(responseDto);
     }
 
     @GetMapping(path = "/{userId}")
@@ -42,5 +42,11 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserByIdWithDetails(@PathVariable("userId") Long userId) {
         UserResponseDto responseDto = userService.getUserByIdWithDetails(userId);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping(path = "/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
