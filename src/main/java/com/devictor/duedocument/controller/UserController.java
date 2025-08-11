@@ -1,14 +1,12 @@
 package com.devictor.duedocument.controller;
 
 import com.devictor.duedocument.controller.dto.UserRequestDto;
+import com.devictor.duedocument.controller.dto.UserSummaryDto;
 import com.devictor.duedocument.service.UserService;
 import com.devictor.duedocument.service.dto.UserResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -32,5 +30,11 @@ public class UserController {
                 .buildAndExpand(responseDto.userId())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<UserSummaryDto> getUserById(@PathVariable("userId") Long userId) {
+        UserSummaryDto responseDto = userService.getUserById(userId);
+        return ResponseEntity.ok(responseDto);
     }
 }

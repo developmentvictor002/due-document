@@ -1,6 +1,7 @@
 package com.devictor.duedocument.service;
 
 import com.devictor.duedocument.controller.dto.UserRequestDto;
+import com.devictor.duedocument.controller.dto.UserSummaryDto;
 import com.devictor.duedocument.entity.User;
 import com.devictor.duedocument.exception.UserNotFoundException;
 import com.devictor.duedocument.repository.UserRespository;
@@ -25,5 +26,10 @@ public class UserService {
     protected User findUserEntityById(Long id) {
         return userRespository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id {" + id + "} not found"));
+    }
+
+    public UserSummaryDto getUserById(Long userId) {
+        User user = findUserEntityById(userId);
+        return UserSummaryDto.fromUser(user);
     }
 }

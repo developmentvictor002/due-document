@@ -4,7 +4,6 @@ import com.devictor.duedocument.entity.Document;
 import com.devictor.duedocument.entity.enums.DocumentStatus;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 
 public record DocumentResponseDto(
         Long documentId,
