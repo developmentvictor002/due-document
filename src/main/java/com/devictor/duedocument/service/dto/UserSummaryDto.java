@@ -1,4 +1,4 @@
-package com.devictor.duedocument.controller.dto;
+package com.devictor.duedocument.service.dto;
 
 import com.devictor.duedocument.entity.User;
 
