@@ -3,6 +3,9 @@ package com.devictor.duedocument.service;
 import com.devictor.duedocument.controller.dto.DocumentRequestDto;
 import com.devictor.duedocument.entity.Document;
 import com.devictor.duedocument.entity.User;
+import com.devictor.duedocument.entity.enums.DocumentStatus;
+import com.devictor.duedocument.exception.CannotCancelExpiredDocumentException;
+import com.devictor.duedocument.exception.DocumentNotFoundException;
 import com.devictor.duedocument.exception.InvalidDueDateException;
 import com.devictor.duedocument.exception.UserNotFoundException;
 import com.devictor.duedocument.repository.DocumentRepository;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class DocumentService {
@@ -49,5 +53,29 @@ public class DocumentService {
     private User findUserEntityById(Long id) {
         return userRespository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id {" + id + "} not found"));
+    }
+
+    public void markAllAsExpired(List<Document> documents) {
+        documents.forEach(doc -> doc.setStatus(DocumentStatus.EXPIRED));
+        documentRepository.saveAll(documents);
+    }
+
+    public void markAsArchived(Document document) {
+        document.setStatus(DocumentStatus.ARCHIVED);
+        documentRepository.save(document);
+    }
+
+    public void cancelDocument(Long documentId) {
+        Document document = findDocumentEntityById(documentId);
+        if(document.getStatus() == DocumentStatus.EXPIRED) {
+            throw new CannotCancelExpiredDocumentException(STR."Document id with \{document.getDocumentId()} has already expired and cannot be cancelled");
+        }
+        documentRepository.save(document);
+    }
+
+    private Document findDocumentEntityById(Long documentId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new DocumentNotFoundException(STR."Document with id \{documentId} not found"));
+        return document;
     }
 }
